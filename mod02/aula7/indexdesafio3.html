@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio 3 - Jogo da Velha</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Jogo da Velha</h2>
+<table id="jogoTabuleiro">
+    <tr>
+        <td id="celula00" onclick="jogar(0, 0)"></td>
+        <td id="celula01" onclick="jogar(0, 1)"></td>
+        <td id="celula02" onclick="jogar(0, 2)"></td>
+    </tr>
+    <tr>
+        <td id="celula10" onclick="jogar(1, 0)"></td>
+        <td id="celula11" onclick="jogar(1, 1)"></td>
+        <td id="celula12" onclick="jogar(1, 2)"></td>
+    </tr>
+    <tr>
+        <td id="celula20" onclick="jogar(2, 0)"></td>
+        <td id="celula21" onclick="jogar(2, 1)"></td>
+        <td id="celula22" onclick="jogar(2, 2)"></td>
+    </tr>
+</table>
+<p id="mensagemVencedor"></p>
+
+<script>
+    let tabuleiro = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ];
+
+    let jogadorAtual = 'X';
+    let vencedor = null;
+
+    function jogar(linha, coluna) {
+        if (!tabuleiro[linha][coluna] && !vencedor) {
+            tabuleiro[linha][coluna] = jogadorAtual;
+            document.getElementById('celula' + linha + coluna).innerText = jogadorAtual;
+
+            verificarVencedor();
+            jogadorAtual = (jogadorAtual === 'X') ? 'O' : 'X';
+
+            if (vencedor) {
+                document.getElementById('mensagemVencedor').innerText = 'Jogador ' + vencedor + ' venceu!';
+            }
+        }
+    }
+
+    function verificarVencedor() {
+        for (let i = 0; i < 3; i++) {
+            // Verificar linhas e colunas
+            if (
+                (tabuleiro[i][0] === tabuleiro[i][1] && tabuleiro[i][1] === tabuleiro[i][2] && tabuleiro[i][0] !== '') ||
+                (tabuleiro[0][i] === tabuleiro[1][i] && tabuleiro[1][i] === tabuleiro[2][i] && tabuleiro[0][i] !== '')
+            ) {
+                vencedor = tabuleiro[i][0];
+                return;
+            }
+        }
+
+        // Verificar diagonais
+        if (
+            (tabuleiro[0][0] === tabuleiro[1][1] && tabuleiro[1][1] === tabuleiro[2][2] && tabuleiro[0][0] !== '') ||
+            (tabuleiro[0][2] === tabuleiro[1][1] && tabuleiro[1][1] === tabuleiro[2][0] && tabuleiro[0][2] !== '')
+        ) {
+            vencedor = tabuleiro[1][1];
+        }
+    }
+</script>
+
+</body>
+</html>
